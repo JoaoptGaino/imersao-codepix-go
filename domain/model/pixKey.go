@@ -3,6 +3,8 @@ package model
 import (
 	"errors"
 
+	"time"
+
 	"github.com/asaskevich/govalidator"
 	uuid "github.com/satori/go.uuid"
 )
@@ -19,7 +21,7 @@ type PixKey struct {
 	Base      `valid:"required"`
 	Kind      string   `json:"kind" valid:"notnull"`
 	Key       string   `json:"key" valid:"notnull"`
-	AccountID string   `json:"account_id" valid:"not null"`
+	AccountID string   `json:"account_id" valid:"notnull"`
 	Account   *Account `valid:"-"`
 	Status    string   `json:"status" valid:"notnull"`
 }
@@ -42,6 +44,7 @@ func (pixKey *PixKey) isValid() error {
 }
 
 func NewPixKey(kind string, account *Account, key string) (*PixKey, error) {
+
 	pixKey := PixKey{
 		Kind:    kind,
 		Key:     key,
@@ -50,8 +53,9 @@ func NewPixKey(kind string, account *Account, key string) (*PixKey, error) {
 	}
 
 	pixKey.ID = uuid.NewV4().String()
-	err := pixKey.isValid()
+	pixKey.CreatedAt = time.Now()
 
+	err := pixKey.isValid()
 	if err != nil {
 		return nil, err
 	}
