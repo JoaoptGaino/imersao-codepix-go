@@ -9,7 +9,7 @@ import (
 )
 
 func TestModel_NewAccount(t *testing.T) {
-	code := "986"
+	code := "987"
 	name := "JoaoBank"
 	bank, err := model.NewBank(code, name)
 
